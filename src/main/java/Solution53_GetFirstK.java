@@ -148,7 +148,120 @@ public class Solution53_GetFirstK {
      * 1在下标
      * 如果m 不在数组里面那么所有比m 小的都在对应下标位置。
      * m+1 在m的位置，则转为排序数组中第一个不在下标位置的数。
-     * 利用二分查找的方法
+     * 利用二分查找的方法找到第一个下标不相同的位置。
+     * 1.如果中间元素与下标相等：则下次找右半边
+     * 2.如果中间元素与下标不相同，并且前一个元素也和它的下标不相同则找左半边。
      */
+
+    public   static  int   getMissingNumber(int[]number,int length,int start,int end){
+
+     if(number==null||length<=0){
+         return  -1;
+     }
+     if(start>end){
+         if(end>0 &&number[end]==end &&number[end-1]==end-1){
+             return end+1;
+         }else if(end==0 &&length==2){
+            return 1-number[end];
+         }
+     }
+     int  mid =(start+end)/2;// 0+2 /2
+
+
+        if(number[mid]==mid){//中间元素与下标相同，找右边。
+
+       //  getMissingNumber(number, length,mid+1,end);
+          start=mid+1;//2 // start=3
+     }
+     else if( mid>0 &&number[mid]!=mid  &&number[mid-1]!=mid-1){//前半部分查找// mid >0  number[2]=3
+        // getMissingNumber(number, length, start, mid-1);
+         end=mid-1;
+
+     }else if(mid>0 &&   number[mid]!=mid && number[mid-1]==mid-1)//找到该元素 mid
+        return  mid;// mid =2    mid =1
+     else if(mid==0 && number[mid]!=0 &&number[mid+1]!=mid+1 ){
+         return 0;
+     }
+     return  getMissingNumber(number, length, start,end);//   start =2 ,end=3
+    }
+    @Test
+    public   void   test2(){
+       //缺失的数字在在中间
+        int[] arr1={0,1,3};
+        System.out.println(getMissingNumber(arr1,arr1.length+1,0,arr1.length-1));//pass
+       //缺失的数字在的第一个
+        int[] arr2={1,2,3};
+        System.out.println(getMissingNumber(arr2,arr2.length+1,0,arr2.length-1));//pass
+      //缺失的数字在末尾
+        int[] arr3={0,1,2};
+        System.out.println(getMissingNumber(arr3,arr3.length+1,0,arr3.length-1));//pass
+     // 只有一个数字
+      int[] arr4={0};
+        System.out.println("只有一个数字"+getMissingNumber(arr4,arr4.length+1,0,arr4.length-1));//pass
+
+    }
+    //书上方法
+    int  getMissingnumber2(int[] numbers ,int length){
+        if(numbers==null ||length<=0){
+            return  -1;
+        }
+        int left =0;
+        int right=length-1;
+
+        while (left<=right){
+            int middle=(right+left)>>1;
+            if(numbers[middle]!=middle){//中间值与下标不相同
+                if(middle==0 || numbers[middle-1]==middle-1){
+                    return middle;
+                }
+                right=middle-1;//否则往左边找
+
+            }else{//右边找
+                left=middle+1;
+            }
+        }
+        if(left==length){
+            return length;
+        }
+        return -1;
+    }
+
+
+
+    @Test
+    public   void   test3(){
+        //缺失的数字在在中间
+        int[] arr1={0,1,3};
+        System.out.println(getMissingNumber(arr1,arr1.length+1,0,arr1.length-1));//pass
+        //缺失的数字在的第一个
+        int[] arr2={1,2,3};
+        System.out.println(getMissingNumber(arr2,arr2.length+1,0,arr2.length-1));//pass
+        //缺失的数字在末尾
+        int[] arr3={0,1,2};
+        System.out.println(getMissingNumber(arr3,arr3.length+1,0,arr3.length-1));//pass
+        // 只有一个数字
+        int[] arr4={0};
+        System.out.println("只有一个数字"+getMissingNumber(arr4,arr4.length+1,0,arr4.length-1));//pass
+
+    }
+
+    @Test
+    public   void   test4(){
+        //缺失的数字在在中间
+        int[] arr1={0,1,3};
+        System.out.println(getMissingnumber2(arr1,arr1.length));//pass
+        //缺失的数字在的第一个
+        int[] arr2={1,2,3};
+        System.out.println(getMissingnumber2(arr2,arr2.length));//pass
+        //缺失的数字在末尾
+        int[] arr3={0,1,2};
+        System.out.println(getMissingnumber2(arr3,arr3.length));//pass
+        // 只有一个数字
+        int[] arr4={0};
+        System.out.println("只有一个数字"+getMissingnumber2(arr4,arr4.length));//pass
+
+    }
+
+
 
 }
