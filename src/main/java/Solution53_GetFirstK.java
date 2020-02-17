@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.objects.NativeUint8Array;
 import org.junit.Test;
 
 /**
@@ -142,7 +143,7 @@ public class Solution53_GetFirstK {
      * n=4  的所有数字之和：1+2+3  之和 s1=(1+n)*n/2
      *    缺失的数字之和为s2
      *    则缺失的数s1-s2
-     * 解法2：利用排序数组特点
+     * 解法2：利用排序数组特点  o(logN)
      *因为数组是排序的
      * 0 在0下标
      * 1在下标
@@ -261,7 +262,73 @@ public class Solution53_GetFirstK {
         System.out.println("只有一个数字"+getMissingnumber2(arr4,arr4.length));//pass
 
     }
+    /*****
+     * 题目3:数组中数值和下标相等的元素
+     * 假设一个单调递增的数组里面每个元素都是整数并且唯一。请编写实现一个函数，找出数组中任意
+     * 一个数值等于其下标的元素。例如：在数组{-3，-1,1,3,5}中，数字3 和它的下标相等
+     */
+    /***
+     *  {-3 ， -1，1,3,5}
+     *    0    1   2 3 4
+     *   数值与下标相等：
+     *   number[i]=i
+     *   如果 i>numbers[i] 则往后找
+     *   如果 i<numbers[i] 则往前找
+     *   如果相等则找到
+     */
+    public   static  int   findDevIndexNumber(int[] numbers ){
 
+        if(numbers==null || numbers.length==0){
+            return  -1;
+        }
+        int  left =0;
+        int  right =numbers.length-1;
+        while (left<=right){
+
+            int  mid=(left+right)>>1;
+            if(numbers[mid]<mid){//往后找
+                left=mid+1;
+
+            }else  if(numbers[mid]>mid){
+                right=mid-1;
+            }
+            else{
+                return  mid;
+            }
+
+
+        }
+         return  -1;
+
+    }
+    //书上答案
+    public  int  GetNumberSameAsIndex(int[] numbers ,int length){
+        if(numbers==null|| length<=0){
+            return  -1;
+        }
+        int  left =0;
+        int  right=length-1;
+        while (left<=right){
+            int  mid=left+((right-left)>>1);
+            if(numbers[mid]==mid){
+                return  mid;
+            }else if(numbers[mid]>mid){
+                right=mid-1;//左边找
+            }else{
+                left=mid+1;//右边找
+            }
+        }
+        return  -1;
+    }
+
+    @Test
+    public   void  test6(){
+        int[]  numbers={-3,-1,1,3,5};
+        System.out.println( GetNumberSameAsIndex( numbers,numbers.length ));
+        int[]  numbers1={0,1,3,5};
+        System.out.println( GetNumberSameAsIndex( numbers1,numbers1.length ));
+
+    }
 
 
 }
